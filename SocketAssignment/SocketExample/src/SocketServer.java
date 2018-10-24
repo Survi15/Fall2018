@@ -1,5 +1,4 @@
 
-
 /**
  *
  * @author Ian Gortan
@@ -15,34 +14,20 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-
-
 public class SocketServer {
-  public static void main(String[] args) throws Exception {
-    ServerSocket m_ServerSocket = new ServerSocket(12031);
-   
-    int id = 0; 
-    System.out.println("Server started .....");
-    
-    while (true) {
-    	 ActiveCount threadCount = new ActiveCount();
-//    	ExecutorService threadPool =
-//                Executors.newFixedThreadPool(30);
-//      for(int i=0;i<30;i++) {
-    	  Socket clientSocket = m_ServerSocket.accept();
-    	  
-//    	  threadPool.submit(new SocketHandlerThread(clientSocket, threadCount));
-//      }
-//      threadPool.awaitTermination(10, TimeUnit.MILLISECONDS);
-//      threadPool.execute(new SocketHandlerThread(clientSocket,threadCount));
-    	  
-      SocketHandlerThread server = new SocketHandlerThread (clientSocket, threadCount);
-      server.start();
-      
-//      threadPool.shutdown();
-     
-    }
-    
-  }
-}
+	public static void main(String[] args) throws Exception {
+		ServerSocket m_ServerSocket = new ServerSocket(12031);
 
+		int id = 0;
+		System.out.println("Server started .....");
+
+		while (true) {
+			ActiveCount threadCount = new ActiveCount();
+			ExecutorService threadPool = Executors.newFixedThreadPool(30);
+			Socket clientSocket = m_ServerSocket.accept();
+			threadPool.submit(new SocketHandlerThread(clientSocket, threadCount));
+			threadPool.awaitTermination(10, TimeUnit.MILLISECONDS);
+			threadPool.shutdown();
+		}
+	}
+}
