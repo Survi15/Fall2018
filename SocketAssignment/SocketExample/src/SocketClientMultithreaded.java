@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,9 +34,15 @@ public class SocketClientMultithreaded {
         	SocketClientThread obj = new SocketClientThread(hostName, port, barrier);
         	obj.start();
         }
+        try {
+			barrier.await();
+		} catch (InterruptedException | BrokenBarrierException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         System.out.println("Socket Client multi thread exiting");
         long end=System.currentTimeMillis();
-        System.out.printf("Time %.3f",end-start/1000f);
+        System.out.printf("Time %.3f",(end-start)/1000f);
                 
     }
 
